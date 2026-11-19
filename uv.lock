@@ -1,22 +1,9 @@
 version = 1
 revision = 1
 requires-python = ">=3.10"
-resolution-markers = [
-    "python_full_version >= '3.13'",
-    "python_full_version >= '3.11' and python_full_version < '3.13'",
-    "python_full_version < '3.11'",
-]
 
 [[package]]
-name = "presentation-sanity"
-version = "0.1.0"
-source = { git = "https://github.com/yakaboskic/presentation-sanity.git?rev=main#8b58902117f60c34136838f000dce73b457a658b" }
-dependencies = [
-    { name = "pyyaml" },
-]
-
-[[package]]
-name = "presentation-sanity-template"
+name = "on-traits-and-phenotypes"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
@@ -24,7 +11,23 @@ dependencies = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "presentation-sanity", git = "https://github.com/yakaboskic/presentation-sanity.git?rev=main" }]
+requires-dist = [{ name = "presentation-sanity", editable = "../../personal-projects/presentation-sanity" }]
+
+[[package]]
+name = "presentation-sanity"
+version = "0.2.0"
+source = { editable = "../../personal-projects/presentation-sanity" }
+dependencies = [
+    { name = "pyyaml" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "manim", marker = "extra == 'manim'", specifier = ">=0.18" },
+    { name = "python-pptx", marker = "extra == 'pptx'", specifier = ">=0.6" },
+    { name = "pyyaml", specifier = ">=6.0" },
+]
+provides-extras = ["manim", "pptx"]
 
 [[package]]
 name = "pyyaml"

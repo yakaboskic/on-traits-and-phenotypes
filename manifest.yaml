@@ -1,52 +1,97 @@
-# presentation-sanity manifest — single source of configuration per version.
-# This file is a placeholder for the eventual schema. The Python tool
-# `presentation-sanity` will read this and emit `data/variables.json` for the
-# Slidev side to consume, plus orchestrate manim scene rendering.
+# presentation-sanity manifest — the single source of configuration for this
+# subject. Shared inputs (variables, scenes, figures) feed every printout
+# declared under `outputs:`.
 
 metadata:
-  title: "Presentation Sanity Demo"
+  title: "On Traits and Phenotypes"
+  description: "On Traits and Phenotypes"
   authors:
-    - name: "Your Name"
-      email: "you@example.com"
-  theme: seriph              # any Slidev theme id, package, or local path
+    - name: "Chase Yakaboski"
+      email: "chase.yakaboski@simage.ai"
 
-# Variables get computed by `presentation-sanity build` and written to
-# `data/variables.json`. Provenance metadata powers an interactive
-# provenance popover in the rendered deck (matching document-sanity).
-variables:
-  num_samples:
-    value: 12453
-    format: ","
-    description: "Total samples after QC filtering"
-    source: "data/results.csv"
-    command: "python data/compute.py"
-    updated: "2026-04-29"
-  p_value:
-    value: 0.0087
-    format: ".2e"
-    description: "Primary genome-wide p-value"
-    source: "data/results.csv"
-    command: "python data/compute.py"
-    updated: "2026-04-29"
-  effect_size:
-    value: 0.342
-    format: ".3f"
-    description: "Mean effect size across discovery cohort"
-    # `data` (list) renders as a multi-line "inputs" node in the
-    # provenance graph. Use this when a value depends on multiple files.
-    # Falls back to `source:` (single file) when `data:` is absent.
-    data:
-      - "data/results.csv"
-      - "data/cohort_metadata.tsv"
-    command: "python scripts/effect_size.py --cohort discovery"
-    updated: "2026-04-29"
+# ─── Outputs ────────────────────────────────────────────────────────────────
+outputs:
+  blog:
+    engine: vitepress
+    entry: blog.md              # rewritten to `/` in the built site
+    out: site/blog
 
-# Manim scenes to render before the Slidev build. Each entry produces
-# a video at `public/manim/<output>.webm` that slides reference via
-# `<SlidevVideo src="/manim/<output>.webm">`.
-scenes:
-  intro:
-    source: "scenes/intro.py"
-    class: "IntroScene"
-    quality: "h"             # 1080p; use 'l' for fast iteration
-    format: "webm"
+    # ── Theming levers, all forwarded into the generated VitePress config ──
+    # Lifted into themeConfig:   nav, sidebar, socialLinks, outline, footer
+    # Any other theme option:    themeConfig: { logo, search, editLink, aside, … }
+    # Any other site option:     vitepress:  { appearance, lang, titleTemplate, … }
+    # Also accepted here: base (ABSOLUTE prefix), head, markdown, exclude,
+    # lastUpdated, title, description.
+    outline: [2, 3]
+    # themeConfig:
+    #   aside: false           # drop the right-hand outline rail
+    # vitepress:
+    #   appearance: dark       # true | false | 'dark' | 'force-dark'
+
+  # To also deliver this as a talk, add slides.md and uncomment. It reuses the
+  # same variables, scenes and figures — nothing below changes.
+  # slides:
+  #   engine: slidev
+  #   entry: slides.md
+  #   out: site/slides
+  #   theme: seriph
+  #   base: "./"
+
+# ─── Shared inputs ──────────────────────────────────────────────────────────
+# Read directly by <DataValue> in any output, via @modyfi/vite-plugin-yaml.
+# Provenance fields are informational — surfaced in the panel, never executed.
+variables: {}
+  # example:
+  # heritability_h2:
+  #   value: 0.42
+  #   format: ".2f"
+  #   description: "SNP-based heritability of the focal trait"
+  #   source: "data/ldsc.log"
+  #   command: "python scripts/h2.py"
+  #   updated: "2026-09-02"
+
+# Rendered once to public/manim/<key>.<format> (+ a last-frame poster).
+# Embed with <ManimFigure scene="<key>" /> in the blog, `layout: manim` in a deck.
+scenes: {}
+  # intro:
+  #   source: "scenes/intro.py"
+  #   class: "IntroScene"
+  #   quality: "h"
+  #   format: "webm"
+
+# Excalidraw sources exported to public/figures/<key>.<format>.
+# Embed with <FigureImage figure="<key>" />.
+figures: {}
+
+# ─── Bibliography ───────────────────────────────────────────────────────────
+# LaTeX-shaped citing: \cite{key} in a document, \bibliography where the
+# reference list should go. Parsed and formatted at build time, so the page
+# ships plain anchors — no citation runtime.
+bibliography:
+  sources: ["refs.bib"]
+  style: numeric        # numeric → [1]  |  author-year → (Visscher et al., 2008)
+  sort: appearance      # appearance | author | year
+  title: "References"
+
+# ─── Math ───────────────────────────────────────────────────────────────────
+# TeX settings shared by every output. Macros belong HERE rather than in a
+# \newcommand inside a document: the renderer keeps one TeX instance for the
+# whole build, so an in-document definition leaks into every later block and
+# page, and whether it resolves depends on source order.
+math:
+  # tags: ams          # number display equations and enable \label / \eqref.
+                       # Counters run across the whole build and their starting
+                       # point depends on page order — fine for a single-page
+                       # post, but prefer explicit \tag{…} once there are
+                       # several pages, or reset with \setcounter{equation}{0}.
+  macros:
+    E: "\\operatorname{E}"
+    Var: "\\operatorname{Var}"
+    Cov: "\\operatorname{Cov}"
+    given: "\\mid"
+    RR: "\\mathbb{R}"
+    norm: ["\\left\\lVert #1 \\right\\rVert", 1]
+
+  # environments: true   # allow bare \begin{align} … \end{align} at block
+                         # level, with no surrounding $$. Set false to require
+                         # $$ fencing, or pass an explicit list of env names.

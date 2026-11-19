@@ -1,210 +1,46 @@
-# presentation-sanity-template
+# on-traits-and-phenotypes
 
-A working Slidev deck driven by `manifest.yaml`. Use this repo as a starting
-point for a new deck: clone it (or use it as a GitHub template via the "Use
-this template" button), run `python init.py` to set the deck's name and
-authors, then edit `slides.md`.
+Built on [presentation-sanity](https://github.com/yakaboskic/presentation-sanity).
 
-Declares [`presentation-sanity`](https://github.com/yakaboskic/presentation-sanity)
-as a git dependency. By default the install **does not pull manim** —
-pre-rendered videos live in `public/manim/` and travel with the deck, so
-deploying doesn't require cairo/pango/native build tools. Add the `[manim]`
-extra (see below) only when you want to render scenes locally.
+`manifest.yaml` is the single source of configuration: shared variables, manim
+scenes and Excalidraw figures, plus the `outputs:` that print them. Today that's
+one output — `blog.md` rendered by VitePress. Adding a `slides.md` deck later is
+a few lines under `outputs:`; the variables, scenes and figures don't move.
 
-## Structure
-
-```
-your-deck/
-├── init.py                 # one-time bootstrap: prompts for name, title, authors
-├── pyproject.toml          # declares presentation-sanity dep (manim is optional)
-├── package.json            # Slidev + vite-plugin-yaml
-├── vite.config.ts          # base: './' for subdirectory-servable builds + YAML plugin
-├── manifest.yaml           # single source of config (variables, scenes, theme)
-├── slides.md               # the deck
-├── style.css               # opinionated global styles (auto-loaded by Slidev)
-├── components/
-│   └── DataValue.vue       # reads manifest.yaml directly; provenance tooltip
-├── layouts/
-│   └── manim.vue           # full-screen manim slides; src follows BASE_URL
-├── scenes/
-│   └── intro.py            # manim source
-├── public/                 # static assets (paths follow Vite base)
-│   └── manim/              # rendered videos — committed alongside source
-├── .cache/                 # manim render cache (gitignored)
-└── dist/                   # build output (gitignored)
-```
-
-## One-time setup
+## Setup
 
 ```bash
-python init.py              # set deck name, title, authors (run once on a fresh clone)
-uv sync                     # installs presentation-sanity (no manim by default)
-npm install                 # installs Slidev side (~700 packages)
+uv sync            # Python deps — resolves presentation-sanity from the local
+                   # checkout at ../../personal-projects/presentation-sanity
+npm install        # VitePress + the YAML and math plugins
 ```
 
-To **render manim scenes locally**, install the manim extra and the native
-deps it needs:
+## Workflow
 
 ```bash
-# Switch the dep in pyproject.toml to `presentation-sanity[manim]@…`, then:
-uv sync
-
-brew install ffmpeg cairo pango      # macOS — Linux: apt install libcairo2-dev libpango1.0-dev
-# LaTeX is needed for MathTex (TeX Live, BasicTeX, etc.)
+uv run presentation-sanity outputs         # what this subject declares
+uv run presentation-sanity dev blog        # hot reload at localhost:5173
+uv run presentation-sanity build           # → site/blog/
+uv run presentation-sanity preview blog    # serve the build at localhost:8000
+uv run presentation-sanity build-manim     # re-render stale scenes only
 ```
 
-If you're just iterating on slides (and the deck already has rendered
-videos in `public/manim/`), skip the manim install entirely —
-`presentation-sanity build` auto-skips rendering with a log line and
-moves straight on to `slidev build`.
+`.vitepress/` is generated from `manifest.yaml` on every dev/build and is
+gitignored — don't hand-edit it. Configure the site under `outputs.blog:` in the
+manifest, style it in `blog.css`, and add components to `components/` (they're
+registered globally under their filename).
 
-## Daily workflow
+See the
+[template README](https://github.com/yakaboskic/presentation-sanity-template)
+for the full manifest schema, the provenance panel, and manim/figure workflow.
+
+## Deploying
 
 ```bash
-uv run presentation-sanity dev          # slidev hot-reload at localhost:3030
-uv run presentation-sanity build        # full pipeline → dist/
-uv run presentation-sanity preview      # serve dist/ at localhost:8000
-uv run presentation-sanity build-manim  # re-render only stale scenes
-uv run presentation-sanity export pdf
-uv run presentation-sanity export pptx
+uv run presentation-sanity build blog --base /on-traits/
+aws s3 sync site/blog/ s3://…/on-traits/ --acl public-read
 ```
 
-`build` runs: parse manifest → render stale manim scenes (cached by content
-hash) → `slidev build` → static bundle in `dist/`.
-
-`preview` exists because **double-clicking `dist/index.html` won't work** —
-modern browsers refuse to load ES modules from `file://` URLs. Any HTTP
-server is fine; `preview` is just the convenient one-liner. Your eventual
-S3/R2/GitHub-Pages deploy will work because those serve over HTTP.
-
-## Editing variables
-
-Edit `manifest.yaml`. Slidev hot-reloads on save.
-
-```yaml
-variables:
-  num_samples:
-    value: 12453
-    format: ","                       # , .2e .3f .1%
-    description: "Total samples after QC filtering"
-    source: "data/results.csv"        # informational, surfaced in tooltip
-    command: "python scripts/fit.py"  # informational — not executed
-    updated: "2026-04-29"
-```
-
-In a slide: `<DataValue var="num_samples" />` renders `12,453`. **Click
-the underlined value** and a side panel slides in from the right showing
-the provenance as a vertical graph: `inputs → command → variable`. Press
-`Esc`, click the backdrop, or click the `×` to dismiss.
-
-```
-┌─── INPUTS ───────────────────────┐
-│ data/results.csv                 │   ← blue
-│ data/cohort_metadata.tsv         │
-└──────────────────────────────────┘
-              ↓
-┌─── COMMAND ──────────────────────┐
-│ python scripts/effect_size.py    │   ← amber, monospace
-└──────────────────────────────────┘
-              ↓
-┌─── VARIABLE ─────────────────────┐
-│ effect_size:.3f    [0.342]       │   ← green, the output
-└──────────────────────────────────┘
-```
-
-Use `data:` (a list of file paths) for the multi-input case, or
-`source:` (a single path) for the single-file fallback. The panel
-renders whichever is present; if both are present, `data:` wins.
-
-The panel is a singleton mounted via `global-bottom.vue` (Slidev's
-convention for app-level overlays), wired through a tiny shared ref in
-`composables/useProvenance.ts`. To restyle, edit
-`components/ProvenancePanel.vue`.
-
-## Adding a manim scene
-
-1. **Write the scene.** Add a class to `scenes/<name>.py` (subclass `manim.Scene`).
-2. **Register it** in `manifest.yaml` under `scenes:`:
-   ```yaml
-   scenes:
-     my_scene:
-       source: "scenes/my_scene.py"
-       class: "MyScene"
-       quality: "h"          # l | m | h | p | k  (low → 4k)
-       format: "webm"
-   ```
-3. **Use it** in `slides.md` as a full-screen layout:
-   ```markdown
-   ---
-   layout: manim
-   scene: my_scene
-   ---
-
-   (optional caption text — overlaid at bottom)
-   ```
-4. `uv run presentation-sanity build-manim` to render. Subsequent builds
-   skip rendering until the source `.py` file or the manifest entry changes.
-
-The `manim` layout (`layouts/manim.vue` — Slidev uses the filename verbatim
-as the layout name, so keep it lowercase to match `layout: manim`) handles
-autoplay, click-to-replay
-on revisit, and aspect-ratio fit. Frontmatter knobs:
-
-| Key | Default | Description |
-|---|---|---|
-| `scene` | required | Manifest scene key |
-| `format` | `webm` | Video format / extension |
-| `autoplay` | `true` | Replay automatically on every slide entry |
-| `controls` | `false` | Show video controls |
-| `background` | `black` | Slide background color |
-| `replayKey` | `r` | Press this key (while the slide is active) to replay |
-| `pauseKey` | `p` | Toggle pause/play — handy for stopping on a key frame |
-
-Click anywhere on the video to replay too — clicking is bound to the same
-handler as the replay key. Pause/reset happens on slide leave, so revisits
-always start from frame 0.
-
-## Customizing styles
-
-`style.css` is auto-loaded by Slidev. The default file ships with:
-
-- Overview button hidden (`title="Show slide overview"`)
-- More-options gear hidden
-- Light highlight on `<DataValue>` text
-
-Uncomment / add lines to taste. Anything outside `.slidev-layout` applies
-globally, including to the presenter UI — scope under `.slidev-layout` to
-keep changes confined to the slides themselves.
-
-For per-slide CSS, use a scoped `<style>` block inside `slides.md`:
-
-```html
-<style scoped>
-  h1 { color: tomato; }
-</style>
-```
-
-## Static deployment
-
-```bash
-uv run presentation-sanity build
-# upload dist/ to your bucket
-aws s3 sync dist/ s3://my-talks/2026-talk/ --acl public-read
-```
-
-The deck uses **hash routing** (`#/2`, `#/3`, etc.) so it works on any
-static host without SPA fallback config.
-
-### Subdirectory deploys
-
-`vite.config.ts` ships with `base: './'`, so `dist/` works unchanged at
-any URL prefix (e.g. `https://host/preview/abc/`, `https://host/talks/2026/`).
-To override per-build, pass `--base` through to slidev:
-
-```bash
-uv run presentation-sanity build --base ./           # relative paths (default)
-uv run presentation-sanity build --base /talks/2026/ # known prefix
-```
-
-The `manim` layout uses `import.meta.env.BASE_URL` so video URLs follow
-the same rule — the same `dist/` lands correctly at any subdirectory.
+VitePress needs an **absolute** base (`/on-traits/`), unlike Slidev's relative
+`./`. The build emits real `.html` routes (`cleanUrls: false`), so it works on a
+static bucket with no rewrite rules.
