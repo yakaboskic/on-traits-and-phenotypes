@@ -1,0 +1,283 @@
+
+% Web resource, misc entry type. `plainnat` renders it as:
+%   author. title, year. howpublished.
+% (No at-sign in this comment on purpose: BibTeX has no comment syntax --
+%  an at-sign anywhere starts an entry, even inside a percent line.)
+% Braced author = corporate author, so BibTeX doesn't parse it as a person name.
+% Title is the work's own name, per https://www.genome.gov/genetics-glossary.
+% Cite a specific entry with a natbib locator, e.g.
+%   \cite[s.v. Phenotype]{nhgri_glossary}
+@misc{nhgri_glossary,
+  author       = {{National Human Genome Research Institute}},
+  title        = {Talking Glossary of Genetic Terms},
+  howpublished = {National Institutes of Health},
+  year         = {2026},
+  url          = {https://www.genome.gov/genetics-glossary},
+  note         = {Accessed 4 September 2026}
+}
+
+% ── Ontology ────────────────────────────────────────────────────────────────
+@article{efo_malone2010,
+  author  = {Malone, James and Holloway, Ele and Adamusiak, Tomasz and
+             Kapushesky, Misha and Zheng, Jie and Kolesnikov, Nikolay and
+             Zhukova, Anna and Brazma, Alvis and Parkinson, Helen},
+  title   = {Modeling sample variables with an {Experimental Factor Ontology}},
+  journal = {Bioinformatics},
+  year    = {2010},
+  volume  = {26},
+  number  = {8},
+  pages   = {1112--1118},
+  doi     = {10.1093/bioinformatics/btq099}
+}
+
+% ── Semantic similarity measures ────────────────────────────────────────────
+@inproceedings{resnik1995,
+  author    = {Resnik, Philip},
+  title     = {Using information content to evaluate semantic similarity in a taxonomy},
+  booktitle = {Proceedings of the 14th International Joint Conference on
+               Artificial Intelligence (IJCAI)},
+  pages     = {448--453},
+  year      = {1995}
+}
+
+@inproceedings{lin1998,
+  author    = {Lin, Dekang},
+  title     = {An information-theoretic definition of similarity},
+  booktitle = {Proceedings of the 15th International Conference on
+               Machine Learning (ICML)},
+  pages     = {296--304},
+  year      = {1998}
+}
+
+@inproceedings{jiang1997,
+  author    = {Jiang, Jay J. and Conrath, David W.},
+  title     = {Semantic similarity based on corpus statistics and lexical taxonomy},
+  booktitle = {Proceedings of the International Conference on Research in
+               Computational Linguistics (ROCLING X)},
+  pages     = {19--33},
+  year      = {1997}
+}
+
+@inproceedings{wu1994,
+  author    = {Wu, Zhibiao and Palmer, Martha},
+  title     = {Verb semantics and lexical selection},
+  booktitle = {Proceedings of the 32nd Annual Meeting of the Association for
+               Computational Linguistics (ACL)},
+  pages     = {133--138},
+  year      = {1994}
+}
+
+@inproceedings{seco2004,
+  author    = {Seco, Nuno and Veale, Tony and Hayes, Jer},
+  title     = {An intrinsic information content metric for semantic similarity
+               in {WordNet}},
+  booktitle = {Proceedings of the 16th European Conference on Artificial
+               Intelligence (ECAI)},
+  pages     = {1089--1090},
+  year      = {2004}
+}
+
+@inproceedings{zhou2008,
+  author    = {Zhou, Zili and Wang, Yanna and Gu, Junzhong},
+  title     = {A new model of information content for semantic similarity in {WordNet}},
+  booktitle = {Proceedings of the Second International Conference on Future
+               Generation Communication and Networking Symposia (FGCNS)},
+  pages     = {85--89},
+  year      = {2008},
+  doi       = {10.1109/FGCNS.2008.16}
+}
+
+% ═══════════════════════════════════════════════════════════════════════════
+% Introduction citations. The comment above each entry records WHY it was
+% chosen for the sentence it supports. Rationale is kept in comments rather
+% than a `note` field because `note` is rendered into the printed bibliography.
+% ═══════════════════════════════════════════════════════════════════════════
+
+% SENTENCE: "...monogenic diseases such as Cystic Fibrosis [cite]"
+% WHY: the primary gene-identification paper for CF, not a review. The sentence
+% is about assigning a genetic association to an observed phenotype, and this
+% is the canonical instance of exactly that for a monogenic disease. Chosen
+% over the two companion 1989 papers (Rommens; Kerem) because Riordan is the
+% one that characterises CFTR itself.
+@article{riordan1989,
+  author  = {Riordan, John R. and Rommens, Johanna M. and Kerem, Bat-sheva and
+             Alon, Noa and Rozmahel, Richard and Grzelczak, Zbyszko and
+             Zielenski, Julian and Lok, Si and Plavsic, Natasa and Chou, Jia-Ling
+             and Drumm, Mitchell L. and Iannuzzi, Michael C. and Collins, Francis S.
+             and Tsui, Lap-Chee},
+  title   = {Identification of the cystic fibrosis gene: cloning and
+             characterization of complementary {DNA}},
+  journal = {Science},
+  year    = {1989},
+  volume  = {245},
+  number  = {4922},
+  pages   = {1066--1073},
+  doi     = {10.1126/science.2475911}
+}
+
+% SENTENCE: "...or Huntington's Disease [cite]"
+% WHY: the paper that identified the expanded CAG repeat in IT15/HTT. Pairs
+% with Riordan as the second canonical monogenic example, and is the standard
+% citation for HD's genetic basis.
+@article{hdcrg1993,
+  author  = {{The Huntington's Disease Collaborative Research Group}},
+  title   = {A novel gene containing a trinucleotide repeat that is expanded
+             and unstable on {Huntington's} disease chromosomes},
+  journal = {Cell},
+  year    = {1993},
+  volume  = {72},
+  number  = {6},
+  pages   = {971--983},
+  doi     = {10.1016/0092-8674(93)90585-E}
+}
+
+% SENTENCE: "...greatly successful in uncovering numerous genotype to phenptype
+%            relationships and yeilding promising theraputics [cite]"
+% WHY: this is the quantitative claim the sentence needs. Minikel et al. show
+% drug mechanisms with human genetic support are 2.6x more likely to reach
+% approval, which is the strongest available evidence that genotype-phenotype
+% work has yielded therapeutics. It is also the paper you referred to by name
+% in the placeholder.
+@article{minikel2024,
+  author  = {Minikel, Eric Vallabh and Painter, Jeffery L. and Dong, Coco Chengliang
+             and Nelson, Matthew R.},
+  title   = {Refining the impact of genetic evidence on clinical success},
+  journal = {Nature},
+  year    = {2024},
+  doi     = {10.1038/s41586-024-07316-0}
+}
+
+% SENTENCE: "In a genome wide association study (GWAS), BMI is certianly
+%            treated as a trait [cite]"
+% WHY: deliberately chosen over a BMI-only GWAS. This meta-analysis runs height
+% AND BMI side by side as two co-equal traits in one study of ~700,000 people
+% -- which is precisely the practice the paragraph is questioning, and it uses
+% the same two traits your BMI argument turns on.
+@article{yengo2018,
+  author  = {Yengo, Loic and Sidorenko, Julia and Kemper, Kathryn E. and
+             Zheng, Zhili and Wood, Andrew R. and Weedon, Michael N. and
+             Frayling, Timothy M. and Hirschhorn, Joel and Yang, Jian and
+             Visscher, Peter M.},
+  title   = {Meta-analysis of genome-wide association studies for height and
+             body mass index in $\sim$700\,000 individuals of {European} ancestry},
+  journal = {Human Molecular Genetics},
+  year    = {2018},
+  volume  = {27},
+  number  = {20},
+  pages   = {3641--3649},
+  doi     = {10.1093/hmg/ddy271}
+}
+
+% SENTENCE: "...a clinical diagnosis and a biobank self-report should probably
+%            not be treated as the same trait, although it often is [cite]"
+% WHY: two citations, because the sentence makes two claims. Schoeler et al.
+% quantify self-report inaccuracy across UK Biobank and show it biases
+% downstream estimates -- the general case. Hu et al. is the concrete
+% demonstration: self-reported Alzheimer's status in UK Biobank distorts
+% genetic effect estimates relative to ascertained diagnosis. Together they
+% support "should not be treated as the same" and "although it often is".
+@article{schoeler2025,
+  author  = {Schoeler, Tabea and Pingault, Jean-Baptiste and Kutalik, Zolt{\'a}n},
+  title   = {The impact of self-report inaccuracy in the {UK Biobank} and its
+             interplay with selective participation},
+  journal = {Nature Human Behaviour},
+  year    = {2025},
+  volume  = {9},
+  pages   = {584--594},
+  doi     = {10.1038/s41562-024-02061-w}
+}
+
+@article{hu2025,
+  author  = {Hu, Shuyuan and Zhu, Ping and Gao, Shan and Wu, Shiyang and
+             He, Yijie and Liu, Fengzhen and Wang, Kun and Liu, Guiyou},
+  title   = {Self-report {Alzheimer's} disease statuses in {UK Biobank}
+             distort downstream analyses},
+  journal = {Journal of Neurochemistry},
+  year    = {2025},
+  volume  = {169},
+  number  = {7},
+  pages   = {e70151},
+  doi     = {10.1111/jnc.70151}
+}
+
+% SENTENCE: "...disease and experimental ontologies and controlled vocabularies
+%            [cite]"  (your placeholder listed EFO, MONDO, ICT, HPO, ORDO)
+% WHY: the reference publication for each named resource. EFO is cited via
+% efo_malone2010 (already in this file, also used in the Supplementary).
+% NOTE: "ICT" is left uncited -- most likely a typo for ICD, but I did not want
+% to guess which classification you meant.
+@article{mondo2026,
+  author  = {Vasilevsky, Nicole A. and Toro, Sabrina and Matentzoglu, Nicolas
+             and Flack, Joseph E. and Mullen, Kathleen R. and Hegde, Harshad
+             and others},
+  title   = {Mondo: integrating disease terminology across communities},
+  journal = {Genetics},
+  year    = {2026},
+  volume  = {232},
+  number  = {4},
+  pages   = {iyaf215},
+  doi     = {10.1093/genetics/iyaf215}
+}
+
+@article{hpo2024,
+  author  = {Gargano, Michael A. and Matentzoglu, Nicolas and Coleman, Ben and
+             Addo-Lartey, Eunice B. and others},
+  title   = {The {Human Phenotype Ontology} in 2024: phenotypes around the world},
+  journal = {Nucleic Acids Research},
+  year    = {2024},
+  volume  = {52},
+  number  = {D1},
+  pages   = {D1333--D1346},
+  doi     = {10.1093/nar/gkad1005}
+}
+
+% ORDO has no journal paper; this workshop contribution is the canonical
+% reference the Orphanet team points to.
+@inproceedings{ordo2014,
+  author    = {Vasant, Drashtti and Chanas, Laetitia and Malone, James and
+               Hanauer, Marc and Olry, Annie and Jupp, Simon and
+               Robinson, Peter N. and Parkinson, Helen and Rath, Ana},
+  title     = {{ORDO}: an ontology connecting rare disease, epidemiology and
+               genetic data},
+  booktitle = {Proceedings of the Workshop on Bio-Ontologies, ISMB},
+  year      = {2014}
+}
+
+% SENTENCE: "...quite successful in harmonizing biological data [cite]"
+% WHY: the GWAS Catalog is the strongest concrete evidence for this claim, and
+% it is evidence about EFO specifically -- the Catalog annotates every study
+% with EFO terms so that trait descriptions are computable and interoperable
+% across datasets. It also sets up the EFO discussion that follows, and is the
+% natural corpus referenced in the Supplementary.
+@article{gwascatalog2023,
+  author  = {Sollis, Elliot and Mosaku, Abayomi and Abid, Ala and Buniello, Annalisa
+             and Cerezo, Maria and Gil, Laurent and Groza, Tudor and
+             G{\"u}nes, Osman and Hall, Peggy and Hayhurst, James and others},
+  title   = {The {NHGRI-EBI GWAS Catalog}: knowledgebase and deposition resource},
+  journal = {Nucleic Acids Research},
+  year    = {2023},
+  volume  = {51},
+  number  = {D1},
+  pages   = {D977--D985},
+  doi     = {10.1093/nar/gkac1010}
+}
+
+% SENTENCE: "...ensuring researchers are speaking the a unified language [cite]"
+% WHY: the OBO Foundry paper is precisely about coordinating ontologies into a
+% shared, non-redundant vocabulary so that independently produced data can be
+% integrated -- i.e. the "unified language" claim, stated as a design programme
+% rather than as an outcome for one resource.
+@article{obofoundry2007,
+  author  = {Smith, Barry and Ashburner, Michael and Rosse, Cornelius and
+             Bard, Jonathan and Bug, William and Ceusters, Werner and
+             Goldberg, Louis J. and Eilbeck, Karen and Ireland, Amelia and
+             Mungall, Christopher J. and others},
+  title   = {The {OBO Foundry}: coordinated evolution of ontologies to support
+             biomedical data integration},
+  journal = {Nature Biotechnology},
+  year    = {2007},
+  volume  = {25},
+  number  = {11},
+  pages   = {1251--1255},
+  doi     = {10.1038/nbt1346}
+}

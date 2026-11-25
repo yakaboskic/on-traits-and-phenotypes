@@ -1,0 +1,45 @@
+metadata:
+  title: 'On Traits and Phenotypes: The phenotype side of the genotype–phenotype map'
+  authors:
+  - name: Chase Yakaboski
+    email: chase.yakaboski@simage.ai
+  template: article
+  word_template: article
+  word_styles: article
+  html_styles: article
+  keywords:
+  - phenotype
+  - trait
+  - composition
+  - ontology
+  - measurement
+  abstract: Traits and phenotypes are frequently represented as named variables, even
+    when their values depend on measurement procedures and compositions of other traits.
+    We develop a working formalization of traits as typed observable functions and
+    phenotype profiles as evaluations of a compositional trait algebra. This distinguishes
+    traits from their values, preserves deterministic dependencies, and makes observational
+    context and partial recording explicit. We connect evaluation to equivalence classes
+    of biological states, distinguish ontology alignment from equality of observables,
+    and outline a research program for comparing phenotype constructions and investigating
+    transportability. The resource audit and causal identification results are proposed
+    work rather than completed empirical findings.
+sections:
+- docs/01-introduction.md
+- docs/02-trait-algebra.md
+- docs/03-phenotype-profiles.md
+- docs/04-ontologies.md
+- docs/05-causal-semantics.md
+- docs/06-research-agenda.md
+- docs/07-discussion.md
+- docs/08-supplementary.md
+- _bibliography
+variables: {}
+figures:
+  efo_bmi_tree:
+    width: \textwidth
+    crop: false
+    provenance:
+      description: Historical EFO diagram recovered from the September manuscript;
+        ontology version unpinned, annotations require review.
+      source: paper/recovery/manuscript/figures/efo_bmi_tree.pdf
+tables: {}

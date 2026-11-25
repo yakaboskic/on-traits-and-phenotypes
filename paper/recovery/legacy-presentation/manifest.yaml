@@ -23,6 +23,10 @@ outputs:
     # Also accepted here: base (ABSOLUTE prefix), head, markdown, exclude,
     # lastUpdated, title, description.
     outline: [2, 3]
+    exclude: ["recovery/**"]
+    nav:
+      - { text: "Essay", link: "/" }
+      - { text: "Supplement", link: "/supplementary" }
     # themeConfig:
     #   aside: false           # drop the right-hand outline rail
     # vitepress:

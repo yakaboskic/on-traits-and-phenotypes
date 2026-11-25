@@ -10,7 +10,5 @@ __pycache__/
 # Generated from manifest.yaml on every build — never hand-edited.
 .vitepress/
 
-# Rendered manim videos — rebuildable from scenes/*.py
-public/manim/*.webm
-public/manim/*.mp4
-public/manim/*.poster.png
+# Generated paper outputs
+paper/out/

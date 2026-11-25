@@ -1,0 +1,36 @@
+metadata:
+  title: On Traits and Phenotypes
+  description: On Traits and Phenotypes
+  authors:
+  - name: Chase Yakaboski
+    email: chase.yakaboski@simage.ai
+outputs:
+  slides: {}
+  blog:
+    outline:
+    - 2
+    - 3
+    nav:
+    - text: Essay
+      link: /
+    - text: Supplement
+      link: /supplementary
+variables: {}
+scenes: {}
+figures: {}
+bibliography:
+  sources:
+  - refs.bib
+  style: numeric
+  sort: appearance
+  title: References
+math:
+  macros:
+    E: \operatorname{E}
+    Var: \operatorname{Var}
+    Cov: \operatorname{Cov}
+    given: \mid
+    RR: \mathbb{R}
+    norm:
+    - '\left\lVert #1 \right\rVert'
+    - 1

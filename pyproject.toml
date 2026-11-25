@@ -1,28 +1,16 @@
 [project]
 name = "on-traits-and-phenotypes"
 version = "0.1.0"
-description = "On Traits and Phenotypes"
+description = "A paper, blog, and presentations on traits and phenotypes"
 requires-python = ">=3.10"
-# Default install does NOT pull manim — pre-rendered videos in public/manim/
-# travel with the repo, so a deploy environment doesn't need cairo/pango/etc.
-# To render scenes locally, add the extra: presentation-sanity[manim]
-dependencies = [
-    "presentation-sanity",
-]
+dependencies = ["presentation-sanity", "document-sanity"]
 
-# Local checkout rather than the published git dep, so changes to
-# presentation-sanity are picked up here immediately. To go back to GitHub,
-# drop this table and use:
-#   presentation-sanity @ git+https://github.com/yakaboskic/presentation-sanity.git@main
+[tool.uv]
+package = false
+
 [tool.uv.sources]
 presentation-sanity = { path = "../../personal-projects/presentation-sanity", editable = true }
+document-sanity = { path = "../../personal-projects/document-sanity", editable = true }
 
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
-[tool.hatch.metadata]
-allow-direct-references = true
-
-[tool.hatch.build.targets.wheel]
-bypass-selection = true   # this repo has no importable Python
+[tool.uv.workspace]
+members = ["paper", "presentation"]
